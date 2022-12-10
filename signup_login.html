@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign-Up & Log-In Page</title>
+    <link rel="stylesheet" href="./signup_login.css" />
+  </head>
+  <body>
+    <div id="main">
+      <div id="signup">
+        <form>
+          <h2>Sign-Up</h2>
+          <input type="text" placeholder="User Name" id="user_s" />
+          <input type="password" placeholder="Password" id="pass_s" />
+          <button onclick="signupData(event)">Sign Up</button>
+        </form>
+      </div>
+      <div id="login">
+        <form>
+          <h2>Log-In</h2>
+          <input type="text" placeholder="User Name" id="user_l" />
+          <input type="password" placeholder="Password" id="pass_l" />
+          <button onclick="loginData(event)">LogIn</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
+<script>
+  //   let signupStore = JSON.parse(localStorage.getItem("Sign-up")) || [];
+  let logData = JSON.parse(localStorage.getItem("loginDetail")) || [];
+
+  class User {
+    #password;
+    constructor() {
+      this.organization = "Fodo";
+    }
+
+    #validateUsername(username) {
+      let value = username.includes("@") ? false : true;
+      return value;
+    }
+
+    #validatePassword(password) {
+      let value = password.includes("123") ? false : true;
+      return value;
+    }
+
+    login(username, password) {
+      if (username == this.username && password == this.#password) {
+        console.log("Successfully LogIn");
+        logData.push(this);
+        localStorage.setItem("loginDetail", JSON.stringify(logData));
+        window.location.href = "./index.html";
+      } else {
+        console.log("Authentication failed");
+      }
+    }
+
+    sign_up(username, password) {
+      let isValidated = false;
+      isValidated =
+        this.#validateUsername(username) && this.#validatePassword(password);
+
+      if (isValidated) {
+        this.username = username;
+        this.#password = password;
+        console.log("Successfully Registered");
+      } else {
+        console.log("Sign-Up Failed");
+      }
+    }
+  }
+  let s1;
+  let signupData = (event) => {
+    event.preventDefault();
+
+    let userName_s = document.getElementById("user_s").value;
+    let password_s = document.getElementById("pass_s").value;
+
+    s1 = new User();
+    s1.sign_up(userName_s, password_s);
+    console.log(logData);
+  };
+
+  let loginData = (event) => {
+    event.preventDefault();
+
+    let userName_l = document.getElementById("user_l").value;
+    let password_l = document.getElementById("pass_l").value;
+
+    s1.login(userName_l, password_l);
+    console.log(logData);
+  };
+</script>

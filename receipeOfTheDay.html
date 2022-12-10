@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Random Receipe</title>
+    <link rel="stylesheet" href="./receipe.css">
+  </head>
+  <body>
+    <nav id="nav"></nav>
+    <div id="main">
+      <div id="image_title"></div>
+      <div id="details"></div>
+    </div>
+  </body>
+</html>
+<script type="module">
+  import { navbar } from "./component/navbar.js";
+
+  let navbar2 = document.getElementById("nav");
+  navbar2.innerHTML = navbar();
+
+  let body = document.getElementsByTagName("body")
+
+
+
+  let getData = async ()=>{
+    let res = await fetch("https://www.themealdb.com/api/json/v1/1/random.php");
+    let data = await res.json();
+    console.log(data.meals);
+    appendData(data.meals)
+  }
+  body.onload = getData();
+
+  let appendData = (data)=>{
+    let dabba = document.getElementById("image_title");
+    let dabba2 = document.getElementById("details");
+    dabba.innerHTML = null;
+    dabba2.innerHTML = null;
+    data.forEach((el)=>{
+        let div = document.createElement("div");
+        let img = document.createElement("img");
+        img.setAttribute("id","image_")
+        img.src = el.strMealThumb;
+        let title = document.createElement("p");
+        title.innerText = el.strMeal;
+
+        
+        let div2 = document.createElement("div");
+        let category = document.createElement("h3");
+        category.innerText = "Category : " +  el.strCategory;
+        let ingredient = document.createElement("p");
+        ingredient.innerText = "SOME INGREDIENTS : " + el.strIngredient1 + ", " +  el.strIngredient2 + ", " +  el.strIngredient3 + ", " +  el.strIngredient4 + ", " +  el.strIngredient5 + ", " +  el.strIngredient6 + ", " +  el.strIngredient7 + ", " + "and More.";
+        let detail  = document.createElement("p");
+        detail.innerText = "Instructions : " +  el.strInstructions;
+
+        div2.append(category,ingredient,detail);
+        dabba2.append(div2);
+        div.append(img,title)
+        dabba.append(div);
+
+    })
+}
+
+
+</script>
